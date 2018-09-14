@@ -626,23 +626,6 @@ input FulfillmentUpdateInput {
 
 scalar GenericScalar
 
-type Group implements Node {
-  id: ID!
-  name: String!
-  permissions: [PermissionDisplay]
-}
-
-type GroupCountableConnection {
-  pageInfo: PageInfo!
-  edges: [GroupCountableEdge!]!
-  totalCount: Int
-}
-
-type GroupCountableEdge {
-  node: Group!
-  cursor: String!
-}
-
 type HomepageCollectionUpdate {
   errors: [Error]
   shop: Shop
@@ -941,7 +924,7 @@ type OrderEvent implements Node {
   user(id: ID): User
   message: String
   email: String
-  emailType: String
+  emailType: OrderEventsEmails
   amount: Float
   quantity: Int
   composedId: String
@@ -963,6 +946,13 @@ enum OrderEvents {
   FULFILLMENT_FULFILLED_ITEMS
   NOTE_ADDED
   OTHER
+}
+
+enum OrderEventsEmails {
+  PAYMENT
+  SHIPPING
+  ORDER
+  FULFILLMENT
 }
 
 type OrderLine implements Node {
@@ -1716,7 +1706,6 @@ scalar Upload
 
 type User implements Node {
   id: ID!
-  groups(before: String, after: String, first: Int, last: Int): GroupCountableConnection
   email: String!
   addresses(before: String, after: String, first: Int, last: Int): AddressCountableConnection
   isStaff: Boolean!
